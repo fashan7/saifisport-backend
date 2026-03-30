@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.conf import settings
 from .models import Category, Product
-from apps.media.models import ProductImage
+from apps.media.models import ProductImage, MediaFile
 
 class TranslatedField(serializers.Field):
     """
@@ -70,6 +70,13 @@ class ProductSerializer(serializers.ModelSerializer):
 
     # Frontend expects images as flat list of URL strings
     images = serializers.SerializerMethodField()
+    # Write-only — accept list of MediaFile IDs when saving
+    image_ids   = serializers.ListField(
+        child=serializers.IntegerField(),
+        write_only=True,
+        required=False
+    )
+
 
     category_name    = serializers.SerializerMethodField()
     subcategory_name = serializers.SerializerMethodField()
@@ -83,12 +90,42 @@ class ProductSerializer(serializers.ModelSerializer):
             'category', 'category_name',
             'subcategory', 'subcategory_name',
             'product_type', 'type_name',
-            'images', 'created_at',
+            'images', 'image_ids', 'created_at',
         ]
 
     def get_images(self, obj):
-        # Return flat list of URL strings — matches frontend images: string[]
-        return [img.media_file.url for img in obj.images.all() if img.media_file]
+        return [
+            {'id': img.media_file.id, 'url': img.media_file.url}
+            for img in obj.images.select_related('media_file').all()
+            if img.media_file
+        ]
+        
+    def create(self, validated_data):
+        image_ids = validated_data.pop('image_ids', [])
+        product = super().create(validated_data)
+        self._save_images(product, image_ids)
+        return product
+    
+    def update(self, instance, validated_data):
+        image_ids = validated_data.pop('image_ids', None)
+        product = super().update(instance, validated_data)
+        if image_ids is not None:
+            instance.images.all().delete()
+            self._save_images(product, image_ids)
+        return product
+    
+    def _save_images(self, product, image_ids):
+        for i, media_id in enumerate(image_ids):
+            try:
+                media = MediaFile.objects.get(id=media_id)
+                ProductImage.objects.create(
+                    product=product,
+                    media_file=media,
+                    order=i,
+                    is_primary=(i == 0)
+                )
+            except MediaFile.DoesNotExist:
+                pass
 
     def get_category_name(self, obj):
         return obj.category.get_name(self._get_lang()) if obj.category else None
