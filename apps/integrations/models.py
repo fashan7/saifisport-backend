@@ -25,8 +25,13 @@ class SiteSettings(models.Model):
     # Integrations
     active_translation_engine = models.CharField(
         max_length=30,
-        choices=[('lovable', 'Lovable AI'), ('deepl', 'DeepL'), ('google', 'Google Translate')],
-        default='lovable'
+        choices=[
+            ('google_free',      'Google Translate (Free)'),
+            ('deepl',            'DeepL'),
+            ('google_translate', 'Google Translate API'),
+            ('none',             'None'),
+        ],
+        default='google_free'
     )
     deepl_api_key          = models.CharField(max_length=200, blank=True)
     google_translate_key   = models.CharField(max_length=200, blank=True)

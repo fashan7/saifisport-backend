@@ -2,51 +2,76 @@ from rest_framework import serializers
 from .models import SiteSettings
 
 
+class PhoneNumbersField(serializers.Field):
+    """Converts between comma-separated DB string and JSON array."""
+    def to_representation(self, value):
+        if not value:
+            return []
+        return [p.strip() for p in value.split(',') if p.strip()]
+
+    def to_internal_value(self, data):
+        if isinstance(data, list):
+            return ', '.join(str(p).strip() for p in data if str(p).strip())
+        if isinstance(data, str):
+            return data
+        return ''
+
+
+class TranslatableField(serializers.Field):
+    """
+    Read:  authenticated → full dict  |  public → resolved string
+    Write: accepts dict or plain string
+    """
+    def to_representation(self, value):
+        request = self.context.get('request')
+        is_admin = request and request.user and request.user.is_authenticated
+        if is_admin:
+            if isinstance(value, dict):
+                return value
+            return {'fr': value or ''}
+        # Public — resolve to string
+        lang = request.query_params.get('lang', 'fr') if request else 'fr'
+        if isinstance(value, dict):
+            return value.get(lang) or value.get('fr', '')
+        return value or ''
+
+    def to_internal_value(self, data):
+        if isinstance(data, dict):
+            return data
+        if isinstance(data, str):
+            return {'fr': data}
+        return {}
+
+
 class SiteSettingsSerializer(serializers.ModelSerializer):
-    whatsapp_number = serializers.CharField(source='whatsapp', allow_blank=True)
+    # Rename whatsapp → whatsapp_number for frontend compatibility
+    whatsapp_number  = serializers.CharField(
+        source='whatsapp', allow_blank=True, required=False
+    )
+    # Proper read/write for phone numbers
+    phone_numbers    = PhoneNumbersField(required=False)
+    # Proper read/write for translatable fields
+    holiday_message  = TranslatableField(required=False)
+    meta_title       = TranslatableField(required=False)
+    meta_description = TranslatableField(required=False)
 
-    # Frontend expects phone_numbers as a list, backend stores comma-separated string
-    phone_numbers = serializers.SerializerMethodField()
-
-    # Frontend expects holiday_message as a plain string (fr value)
-    # but CMS admin gets the full dict — handled below
-    holiday_message = serializers.SerializerMethodField()
-    
     class Meta:
         model  = SiteSettings
         fields = [
-            'office_address', 'contact_email',
-            'whatsapp_number', 'phone_numbers',
-            'holiday_mode', 'holiday_message',
-            'meta_title', 'meta_description',
+            'office_address',
+            'contact_email',
+            'whatsapp_number',
+            'phone_numbers',
+            'holiday_mode',
+            'holiday_message',
+            'meta_title',
+            'meta_description',
             'active_translation_engine',
-            'calendly_url', 'zoom_url', 'primary_meeting_method',
+            'calendly_url',
+            'zoom_url',
+            'primary_meeting_method',
         ]
         extra_kwargs = {
             'deepl_api_key':        {'write_only': True},
             'google_translate_key': {'write_only': True},
         }
-
-    def get_phone_numbers(self, obj):
-        # Store as comma-separated, return as list
-        if not obj.phone_numbers:
-            return []
-        return [p.strip() for p in obj.phone_numbers.split(',') if p.strip()]
-
-    def get_holiday_message(self, obj):
-        request = self.context.get('request')
-        # Authenticated CMS gets full dict for translation tabs
-        if request and request.user and request.user.is_authenticated:
-            return obj.holiday_message
-        # Public frontend gets resolved string
-        lang = request.query_params.get('lang', 'fr') if request else 'fr'
-        return obj.holiday_message.get(lang) or obj.holiday_message.get('fr', '')
-
-    def to_internal_value(self, data):
-        # Convert phone_numbers list back to comma-separated string on save
-        data = data.copy()
-        if 'phone_numbers' in data and isinstance(data['phone_numbers'], list):
-            data['phone_numbers'] = ', '.join(data['phone_numbers'])
-        if 'whatsapp_number' in data:
-            data['whatsapp'] = data.pop('whatsapp_number')
-        return super().to_internal_value(data)
