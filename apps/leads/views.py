@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.renderers import JSONRenderer
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Lead
 from .serializers import LeadSerializer
@@ -44,10 +45,11 @@ class LeadViewSet(viewsets.ModelViewSet):
             'top_category':     top['category'] if top else None,
         })
 
-    @action(detail=False, methods=['get'], url_path='export')
+    @action(detail=False, methods=['get'], url_path='export',
+        renderer_classes=[JSONRenderer])  # ← bypass content negotiation
     def export(self, request):
-        """CSV export — matches frontend exportQuotesCSV()"""
-        qs = self.get_queryset()
+        import csv
+        from django.http import HttpResponse
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="leads.csv"'
         writer = csv.writer(response)
@@ -56,7 +58,7 @@ class LeadViewSet(viewsets.ModelViewSet):
             'Country', 'Category', 'Quantity', 'Custom Branding',
             'VAT Number', 'Status', 'Priority'
         ])
-        for lead in qs:
+        for lead in self.get_queryset():
             writer.writerow([
                 lead.created_at.strftime('%Y-%m-%d'),
                 lead.club_name, lead.full_name, lead.email, lead.phone,

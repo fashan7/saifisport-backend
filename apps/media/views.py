@@ -18,6 +18,28 @@ class MediaFileViewSet(viewsets.ModelViewSet):
             return [IsAuthenticatedOrReadOnly()]
         return [IsAdminUser()]
 
+    def destroy(self, request, *args, **kwargs):
+        media = self.get_object()
+        if media.product_uses.exists():
+            products = list(media.product_uses.values_list('product__sku', flat=True))
+            return Response(
+                {'error': f'Image is used by products: {", ".join(products)}. Remove from products first.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        # Delete from Cloudinary too
+        if media.public_id:
+            cloudinary.uploader.destroy(media.public_id)
+        return super().destroy(request, *args, **kwargs)
+
+    @action(detail=True, methods=['get'])
+    def usage(self, request, pk=None):
+        media    = self.get_object()
+        pi_qs    = media.product_uses.select_related('product').all()
+        return Response({
+            'in_use':   pi_qs.exists(),
+            'products': [pi.product.sku for pi in pi_qs]
+        })
+
     @action(detail=False, methods=['post'], parser_classes=[parsers.MultiPartParser])
     def upload(self, request):
         file         = request.FILES.get('file')
@@ -26,7 +48,13 @@ class MediaFileViewSet(viewsets.ModelViewSet):
         if not file:
             return Response({'error': 'No file provided.'}, status=400)
 
-        # Map aspect ratio to Cloudinary crop settings
+        allowed_types = ['image/jpeg', 'image/png', 'image/webp']
+        if file.content_type not in allowed_types:
+            return Response({'error': 'Only JPEG, PNG and WebP allowed.'}, status=400)
+
+        if file.size > 10 * 1024 * 1024:  # 10MB
+            return Response({'error': 'File too large. Max 10MB.'}, status=400)
+
         crop_map = {
             '1:1':  {'width': 800,  'height': 800,  'crop': 'fill'},
             '16:9': {'width': 1280, 'height': 720,  'crop': 'fill'},
@@ -36,10 +64,10 @@ class MediaFileViewSet(viewsets.ModelViewSet):
 
         result = cloudinary.uploader.upload(
             file,
-            folder       = 'saifisport',
+            folder         = 'saifisport',
             transformation = transform,
-            quality      = 'auto',
-            fetch_format = 'auto',
+            quality        = 'auto',
+            fetch_format   = 'auto',
         )
 
         media = MediaFile.objects.create(
@@ -52,11 +80,3 @@ class MediaFileViewSet(viewsets.ModelViewSet):
             height       = result.get('height', 0),
         )
         return Response(MediaFileSerializer(media).data, status=201)
-    
-    @action(detail=True, methods=['get'])
-    def usage(self, request, pk=None):
-        media = self.get_object()
-        product_images = media.product_uses.select_related('product').all()
-        in_use   = product_images.exists()
-        products = [pi.product.get_name() for pi in product_images]
-        return Response({'in_use': in_use, 'products': products})
