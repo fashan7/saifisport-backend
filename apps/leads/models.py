@@ -1,5 +1,9 @@
 from django.db import models
 
+class LeadType(models.TextChoices):
+    STANDARD = 'standard', 'Standard Quote'
+    CUSTOM   = 'custom',   'Custom Development'
+
 class Lead(models.Model):
     class Status(models.TextChoices):
         PENDING   = 'pending',   'Pending'
@@ -26,6 +30,13 @@ class Lead(models.Model):
     custom_branding  = models.BooleanField(default=False)
     logo_file        = models.FileField(upload_to='logos/', null=True, blank=True)
     browser_language = models.CharField(max_length=10, blank=True)
+    lead_type          = models.CharField(
+        max_length=20, choices=LeadType.choices, default=LeadType.STANDARD
+    )
+    reference_image    = models.FileField(
+        upload_to='custom-requests/', null=True, blank=True
+    )
+    preferred_material = models.CharField(max_length=50, blank=True)
     
     notes    = models.TextField(blank=True)
     status   = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)

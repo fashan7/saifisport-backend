@@ -39,6 +39,10 @@ class Product(models.Model):
     description = models.JSONField(default=translated_default)
     moq         = models.PositiveIntegerField(default=1, help_text='Minimum order quantity')
     is_featured = models.BooleanField(default=False)
+    available_materials = models.JSONField(
+        default=list,
+        help_text='List of available materials: cowhide, buffalo, pu, pvc'
+    )
 
     category     = models.ForeignKey(
         Category, null=True, blank=True,
