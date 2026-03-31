@@ -17,8 +17,8 @@ from urllib.parse import urlparse
 # ── Config ────────────────────────────────────────────────────────────────────
 BASE_SITE      = "https://saifisport.com"
 API_BASE       = "http://127.0.0.1:8000/api/v1"
-ADMIN_EMAIL    = "fashanzak4@gmail.com"        # ← change
-ADMIN_PASSWORD = "Nahsaf#1997"          # ← change
+ADMIN_EMAIL    = "sammpletest@gmail.com"      
+ADMIN_PASSWORD = "admin#123"         
 DELAY          = 1.5
 
 # ── SKU prefix map ────────────────────────────────────────────────────────────

@@ -1,0 +1,310 @@
+[
+  {
+    "name": "Fight Gear",
+    "url": "https://saifisport.com/product-category/fight-gear/",
+    "level": 1,
+    "children": [
+      {
+        "name": "BOXING GLOVES",
+        "url": "https://saifisport.com/product-category/fight-gear/boxing-gloves/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "GRAPPLING GLOVES",
+        "url": "https://saifisport.com/product-category/fight-gear/grappling-gloves/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "HEAD GUARDS",
+        "url": "https://saifisport.com/product-category/fight-gear/head-guards/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "SHIN IN STEPS",
+        "url": "https://saifisport.com/product-category/fight-gear/shin-in-steps/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "CHEST GUARDS",
+        "url": "https://saifisport.com/product-category/fight-gear/chest-guards/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "FOCUS MITTS",
+        "url": "https://saifisport.com/product-category/fight-gear/focus-mitts/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "BELLY PADS",
+        "url": "https://saifisport.com/product-category/fight-gear/belly-pads/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "THAI PADS",
+        "url": "https://saifisport.com/product-category/fight-gear/thai-pads/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "GROIN GAURDS",
+        "url": "https://saifisport.com/product-category/fight-gear/groin-gaurds/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "PUNCHING BAGS",
+        "url": "https://saifisport.com/product-category/fight-gear/punching-bags/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "SPEED BALLS",
+        "url": "https://saifisport.com/product-category/fight-gear/speed-balls/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "DOUBLE END BALLS",
+        "url": "https://saifisport.com/product-category/fight-gear/double-end-balls/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "HAND WRAPS",
+        "url": "https://saifisport.com/product-category/fight-gear/hand-wraps/",
+        "level": 2,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "Martial Arts",
+    "url": "https://saifisport.com/product-category/martial-arts/",
+    "level": 1,
+    "children": [
+      {
+        "name": "KARATE UNIFORMS",
+        "url": "https://saifisport.com/product-category/martial-arts/karate-uniforms/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "TAEKWONDO UNIFORMS",
+        "url": "https://saifisport.com/product-category/martial-arts/taekwondo-uniforms/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "JUDO UNIFORMS",
+        "url": "https://saifisport.com/product-category/martial-arts/judo-uniforms/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "JIU JITSU UNIFORMS",
+        "url": "https://saifisport.com/product-category/martial-arts/jiu-jitsu-uniforms/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "KARATE GLOVES",
+        "url": "https://saifisport.com/product-category/martial-arts/karate-gloves/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "TAEKWONDO GLOVES",
+        "url": "https://saifisport.com/product-category/martial-arts/taekwondo-gloves/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "BELTS",
+        "url": "https://saifisport.com/product-category/martial-arts/belts/",
+        "level": 2,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "Fitness",
+    "url": "https://saifisport.com/product-category/fitness/",
+    "level": 1,
+    "children": [
+      {
+        "name": "WEIGHT LIFTING GLOVES",
+        "url": "https://saifisport.com/product-category/fitness/weight-lifting-gloves/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "WEIGHT LIFTING BELTS",
+        "url": "https://saifisport.com/product-category/fitness/weight-lifting-belts/",
+        "level": 2,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "Apparel",
+    "url": "https://saifisport.com/product-category/apparel/",
+    "level": 1,
+    "children": [
+      {
+        "name": "Uniforms",
+        "url": "#",
+        "level": 2,
+        "children": [
+          {
+            "name": "BASEBALL UNIFORMS",
+            "url": "https://saifisport.com/product-category/apparel/baseball-uniforms/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "BASKETBALL UNIFORMS",
+            "url": "https://saifisport.com/product-category/apparel/basketball-uniforms/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "AMERICAN FOOTBALL UNIFORMS",
+            "url": "https://saifisport.com/product-category/apparel/american-football-uniforms/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "GOAL KEEPER UNIFORMS",
+            "url": "https://saifisport.com/product-category/apparel/goal-keeper-uniforms/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "RUGBY UNIFORMS",
+            "url": "https://saifisport.com/product-category/apparel/rugby-uniforms/",
+            "level": 3,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Shirts",
+        "url": "#",
+        "level": 2,
+        "children": [
+          {
+            "name": "T-SHIRTS",
+            "url": "https://saifisport.com/product-category/apparel/t-shirts/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "POLO SHIRTS",
+            "url": "https://saifisport.com/product-category/apparel/polo-shirts/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "SWEAT SHIRTS",
+            "url": "https://saifisport.com/product-category/apparel/sweat-shirts/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "COMPRESSION SHIRTS",
+            "url": "https://saifisport.com/product-category/apparel/compression-shirts/",
+            "level": 3,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Jackets",
+        "url": "#",
+        "level": 2,
+        "children": [
+          {
+            "name": "BOMBER JACKETS",
+            "url": "https://saifisport.com/product-category/apparel/bomber-jackets/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "VARSITY JACKETS",
+            "url": "https://saifisport.com/product-category/apparel/varsity-jackets/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "PUFFER JACKETS",
+            "url": "https://saifisport.com/product-category/apparel/puffer-jackets/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "WIND BREAKER JACKETS",
+            "url": "https://saifisport.com/product-category/apparel/wind-breaker-jackets/",
+            "level": 3,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Fitness Wear",
+        "url": "#",
+        "level": 2,
+        "children": [
+          {
+            "name": "FITNESS BRA",
+            "url": "https://saifisport.com/product-category/apparel/fitness-bra/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "FITNESS LEGGINGS",
+            "url": "https://saifisport.com/product-category/apparel/fitness-leggings/",
+            "level": 3,
+            "children": []
+          },
+          {
+            "name": "FITNESS SHORTS",
+            "url": "https://saifisport.com/product-category/apparel/fitness-shorts/",
+            "level": 3,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "RASH GUARDS",
+        "url": "https://saifisport.com/product-category/apparel/rash-guards/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "MMA SHORTS",
+        "url": "https://saifisport.com/product-category/apparel/mma-shorts/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "THAI SHORTS",
+        "url": "https://saifisport.com/product-category/apparel/thai-shorts/",
+        "level": 2,
+        "children": []
+      },
+      {
+        "name": "TROUSERS",
+        "url": "https://saifisport.com/product-category/apparel/trousers/",
+        "level": 2,
+        "children": []
+      }
+    ]
+  }
+]
