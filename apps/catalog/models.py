@@ -21,7 +21,7 @@ class Category(models.Model):
     order  = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ['order', 'id']
+        ordering = ['id']   
         verbose_name_plural = 'Categories'
 
     def get_name(self, lang=None):

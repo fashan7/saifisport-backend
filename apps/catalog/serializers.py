@@ -45,16 +45,6 @@ class CategorySerializer(serializers.ModelSerializer):
         # Category has no timestamp — return a stable placeholder
         return '2026-01-01T00:00:00Z'
 
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        # Frontend expects name as plain string (fr value) for list views
-        request = self.context.get('request')
-        if request and not request.user.is_authenticated:
-            lang = request.query_params.get('lang', 'fr')
-            data['name'] = instance.get_name(lang)
-        return data
-
-
 
 class ProductImageSerializer(serializers.ModelSerializer):
     url = serializers.URLField(source='media_file.url', read_only=True)
