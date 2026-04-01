@@ -2,10 +2,16 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
+from rest_framework.renderers import BaseRenderer
 from django.conf import settings
 from .models import Subscriber, NewsletterSend
 from .serializers import SubscriberSerializer, NewsletterSendSerializer
 
+class PassthroughRenderer(BaseRenderer):
+    media_type = '*/*'
+    format = 'csv'
+    def render(self, data, accepted_media_type=None, renderer_context=None):
+        return data
 
 class SubscriberViewSet(viewsets.ModelViewSet):
     queryset         = Subscriber.objects.all()
@@ -48,7 +54,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Invalid token.'}, status=404)
         
         
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], renderer_classes=[PassthroughRenderer])
     def export(self, request):
         import csv
         from django.http import HttpResponse

@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from apps.subscribers.views import PassthroughRenderer
 
 from apps.accounts.views import MeView, UserListView, UserDetailView
 from apps.analytics.views import TrackVisitView, AnalyticsSummaryView
@@ -48,7 +49,8 @@ urlpatterns = [
     path('newsletter/subscribers/',
          SubscriberViewSet.as_view({'get': 'list'}),             name='newsletter-subscribers'),
     path('newsletter/subscribers/export/',
-         SubscriberViewSet.as_view({'get': 'export'}),           name='newsletter-export'),
+         SubscriberViewSet.as_view({'get': 'export'}, renderer_classes=[PassthroughRenderer]),
+         name='newsletter-export'),
      path('newsletter/blast/',
          SubscriberViewSet.as_view({'post': 'send_newsletter'}), name='newsletter-blast'),
 ]
