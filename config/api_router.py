@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from apps.accounts.views import MeView, UserListView, UserDetailView
+from apps.analytics.views import TrackVisitView, AnalyticsSummaryView
 from apps.catalog.views      import CategoryViewSet, ProductViewSet
 from apps.media.views        import MediaFileViewSet
 from apps.leads.views        import LeadViewSet
@@ -26,7 +27,8 @@ router.register('subcategories',   CategoryViewSet,      basename='subcategory')
 
 urlpatterns = [
      path('', include(router.urls)),
-
+     path('analytics/track/',   TrackVisitView.as_view(),   name='analytics-track'),
+     path('analytics/summary/', AnalyticsSummaryView.as_view(), name='analytics-summary'),
      path('auth/me/',          MeView.as_view(),        name='me'),
      path('users/',            UserListView.as_view(),  name='users'),
      path('users/<int:pk>/',   UserDetailView.as_view(), name='user-detail'),
@@ -52,7 +54,7 @@ urlpatterns = [
 """
 curl -X POST http://127.0.0.1:8000/api/v1/auth/login/ \
   -H "Content-Type: application/json" \
-  -d '{"email":"fashanzak4@gmail.com","password":"Nahsaf#1997"}'
+  -d '{"email":"fashanzak4@gmail.com","password":"testpwd"}'
   
   curl http://127.0.0.1:8000/api/v1/products/ \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0ODYyODY4LCJpYXQiOjE3NzQ4NjEwNjgsImp0aSI6IjBjZmRhMjgyOThmNjRlMTFhYjlhZTNkMzIyYzUyNjgwIiwidXNlcl9pZCI6IjEifQ.83LHQ0xNT-lsfpmifBOf5p_J03U6vf-nhzhYSeggoOU"

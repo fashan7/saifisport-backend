@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     # Our apps (we'll create these next)
     'apps.accounts',
+    'apps.analytics',
     'apps.catalog',
     'apps.media',
     'apps.leads',
@@ -61,6 +62,26 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+INSTALLED_APPS += ['csp']
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src":    ("'self'",),
+        "script-src":     ("'self'", "'unsafe-inline'"),
+        "style-src":      ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com"),
+        "img-src":        ("'self'", "data:", "blob:", "https://res.cloudinary.com", "https://*.cloudinary.com"),
+        "font-src":       ("'self'", "https://fonts.gstatic.com"),
+        "connect-src":    ("'self'", "https://translate.googleapis.com", "http://ip-api.com"),
+        "frame-ancestors":("'none'",),
+        "form-action":    ("'self'",),
+    }
+}
+# Other security headers
+SECURE_CONTENT_TYPE_NOSNIFF = True   # prevents MIME sniffing attacks
+X_FRAME_OPTIONS = 'DENY'             # prevents clickjacking
+SECURE_BROWSER_XSS_FILTER = True
 
 ROOT_URLCONF = 'config.urls'
 
@@ -130,9 +151,9 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '20/minute',   # login attempts
-        'user': '200/minute',
-    },
+        'anon': '200/minute',   # login attempts
+        'user': '600/minute',
+    }
 }
 
 # ── JWT ───────────────────────────────────────────────────────────────────────
@@ -152,7 +173,7 @@ SUPPORTED_LANGUAGES = [
     {'code': 'sv', 'label': 'Svenska',     'flag': '🇸🇪'},
 ]
 
-DEFAULT_LANGUAGE = 'fr'
+DEFAULT_LANGUAGE = 'en'
 LANGUAGE_CODES = [l['code'] for l in SUPPORTED_LANGUAGES]
 
 # ── Media / Cloudinary ────────────────────────────────────────────────────────
@@ -162,6 +183,8 @@ CLOUDINARY_STORAGE = {
     'API_KEY':    os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
+
+
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'

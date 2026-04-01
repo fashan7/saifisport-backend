@@ -7,6 +7,7 @@ from .serializers import CategorySerializer, ProductSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
+    throttle_classes = [] 
     queryset         = Category.objects.all()
     serializer_class = CategorySerializer
     filter_backends  = [DjangoFilterBackend, filters.SearchFilter]
@@ -36,6 +37,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
+    throttle_classes = [] 
     serializer_class = ProductSerializer
     filter_backends  = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category', 'subcategory', 'product_type', 'is_featured']

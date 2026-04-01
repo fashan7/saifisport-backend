@@ -9,8 +9,9 @@ from rest_framework.renderers import JSONRenderer
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Lead
 from .serializers import LeadSerializer
+from .utils import validate_upload
 
-
+# ── ViewSet ────────────────────────────────────────────────────────────────────
 class LeadViewSet(viewsets.ModelViewSet):
     queryset         = Lead.objects.all()
     serializer_class = LeadSerializer
@@ -24,6 +25,22 @@ class LeadViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return [AllowAny()]
         return [IsAdminUser()]
+
+    def perform_create(self, serializer):
+        """Validate any uploaded files before saving."""
+        request = self.request
+
+        # Validate reference_image if present
+        ref_image = request.FILES.get('reference_image')
+        if ref_image:
+            validate_upload(ref_image)
+
+        # Validate logo_file if present
+        logo_file = request.FILES.get('logo_file')
+        if logo_file:
+            validate_upload(logo_file)
+
+        serializer.save()
 
     @action(detail=False, methods=['get'])
     def stats(self, request):
@@ -46,10 +63,8 @@ class LeadViewSet(viewsets.ModelViewSet):
         })
 
     @action(detail=False, methods=['get'], url_path='export',
-        renderer_classes=[JSONRenderer])  # ← bypass content negotiation
+            renderer_classes=[JSONRenderer])
     def export(self, request):
-        import csv
-        from django.http import HttpResponse
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="leads.csv"'
         writer = csv.writer(response)

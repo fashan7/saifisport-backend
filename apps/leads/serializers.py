@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Lead
+from .utils import validate_upload 
 
 class LeadSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,3 +14,13 @@ class LeadSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at',
         ]
         read_only_fields = ['created_at', 'updated_at']
+        
+    def validate_reference_image(self, value):
+        if value:
+            return validate_upload(value)
+        return value
+
+    def validate_logo_file(self, value):
+        if value:
+            return validate_upload(value)
+        return value

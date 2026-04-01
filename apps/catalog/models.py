@@ -11,7 +11,7 @@ class Category(models.Model):
         SUB    = 2, 'Subcategory'
         TYPE   = 3, 'Type'
 
-    name   = models.JSONField(default=translated_default)  # {"fr": "Fight Gear", "en": "..."}
+    name   = models.JSONField(default=translated_default)  
     slug   = models.SlugField(max_length=100, unique=True)
     level  = models.IntegerField(choices=Level.choices)
     parent = models.ForeignKey(
@@ -35,7 +35,7 @@ class Category(models.Model):
 class Product(models.Model):
     sku         = models.CharField(max_length=50, unique=True)
     name        = models.JSONField(default=translated_default)
-    material    = models.JSONField(default=translated_default)
+    material    = models.JSONField(default=dict)
     description = models.JSONField(default=translated_default)
     moq         = models.PositiveIntegerField(default=1, help_text='Minimum order quantity')
     is_featured = models.BooleanField(default=False)

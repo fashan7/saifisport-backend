@@ -10,8 +10,10 @@ class TranslatedField(serializers.Field):
     """
     def __init__(self, *args, **kwargs):
         self.public = kwargs.pop('public', False)
+        kwargs.setdefault('required', False) 
+        kwargs.setdefault('allow_null', True) 
         super().__init__(*args, **kwargs)
-
+        
     def to_representation(self, value):
         if self.public:
             request = self.context.get('request')
@@ -22,6 +24,8 @@ class TranslatedField(serializers.Field):
         return value  # CMS gets the full dict
 
     def to_internal_value(self, data):
+        if data is None:
+            return {}
         if not isinstance(data, dict):
             raise serializers.ValidationError('Expected a JSON object of translations.')
         return data
@@ -62,7 +66,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     name        = TranslatedField()
-    material    = TranslatedField()
+    material    = TranslatedField(required=False, default=dict) 
     description = TranslatedField()
 
     # Frontend expects 'featured', backend field is 'is_featured'
