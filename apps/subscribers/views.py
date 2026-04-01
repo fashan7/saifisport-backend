@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from django.conf import settings
 from .models import Subscriber, NewsletterSend
 from .serializers import SubscriberSerializer, NewsletterSendSerializer
@@ -14,12 +14,11 @@ class SubscriberViewSet(viewsets.ModelViewSet):
     filterset_fields = ['is_active', 'preferred_lang']
 
     def get_permissions(self):
-        # Anyone can subscribe from the frontend
         if self.action == 'create':
-            return [AllowAny()]
-        return [IsAdminUser()]
+            return []                  
+        return [IsAuthenticated()]      
 
-    @action(detail=False, methods=['post'], permission_classes=[IsAdminUser])
+    @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
     def send_newsletter(self, request):
         subject = request.data.get('subject')
         body    = request.data.get('body')
