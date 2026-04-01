@@ -5,14 +5,21 @@ from .serializers import PageSerializer, BannerSerializer, EmailTemplateSerializ
 
 
 class PageViewSet(viewsets.ModelViewSet):
-    queryset         = Page.objects.all()
+    queryset = Page.objects.filter(is_published=True)
     serializer_class = PageSerializer
-    lookup_field     = 'slug'
+    lookup_field = 'slug'
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
-            return [IsAuthenticatedOrReadOnly()]
+            return []          # ← fully public
         return [IsAdminUser()]
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        # Only show published pages to public
+        if not self.request.user.is_authenticated:
+            return qs.filter(is_published=True)
+        return Page.objects.all()
 
 
 class BannerViewSet(viewsets.ModelViewSet):

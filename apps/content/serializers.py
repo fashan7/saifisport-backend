@@ -5,15 +5,7 @@ from .models import Page, Banner, EmailTemplate
 
 class TranslatedField(serializers.Field):
     def to_representation(self, value):
-        request = self.context.get('request')
-        # CMS requests (authenticated) get the full dict
-        if request and request.user and request.user.is_authenticated:
-            return value
-        # Public frontend gets resolved string
-        lang = request.query_params.get('lang', settings.DEFAULT_LANGUAGE) if request else settings.DEFAULT_LANGUAGE
-        if lang not in settings.LANGUAGE_CODES:
-            lang = settings.DEFAULT_LANGUAGE
-        return value.get(lang) or value.get(settings.DEFAULT_LANGUAGE, '')
+        return value if isinstance(value, dict) else {}
 
     def to_internal_value(self, data):
         if not isinstance(data, dict):
