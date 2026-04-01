@@ -40,7 +40,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends  = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category', 'subcategory', 'product_type', 'is_featured']
-    search_fields    = ['sku']
+    search_fields    = ['name', 'sku', 'description'] 
     ordering_fields  = ['created_at', 'moq']
     ordering         = ['id']
     throttle_classes = [] 
