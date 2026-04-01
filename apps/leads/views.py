@@ -1,7 +1,7 @@
 import csv
 from django.http import HttpResponse
 from rest_framework import viewsets, filters
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
@@ -30,7 +30,9 @@ class LeadViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action == 'create':
             return [AllowAny()]
-        return [IsAdminUser()]
+        if self.action in ['list', 'retrieve', 'stats', 'export']:
+            return [IsAuthenticated()]  
+        return [IsAdminUser()]  
 
     def perform_create(self, serializer):
         """Validate any uploaded files before saving."""
