@@ -3,6 +3,8 @@ from .models import Lead
 from .utils import validate_upload 
 
 class LeadSerializer(serializers.ModelSerializer):
+    logo_file       = serializers.FileField(required=False, allow_null=True)
+    reference_image = serializers.FileField(required=False, allow_null=True)
     class Meta:
         model  = Lead
         fields = [

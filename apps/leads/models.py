@@ -5,6 +5,7 @@ class LeadType(models.TextChoices):
     CUSTOM   = 'custom',   'Custom Development'
 
 class Lead(models.Model):
+    
     class Status(models.TextChoices):
         PENDING   = 'pending',   'Pending'
         CONTACTED = 'contacted', 'Contacted'
@@ -28,13 +29,13 @@ class Lead(models.Model):
     category         = models.CharField(max_length=100)
     quantity         = models.CharField(max_length=50)
     custom_branding  = models.BooleanField(default=False)
-    logo_file        = models.FileField(upload_to='logos/', null=True, blank=True)
+    logo_file        = models.FileField(upload_to='leads/logos/', null=True, blank=True)
     browser_language = models.CharField(max_length=10, blank=True)
     lead_type          = models.CharField(
         max_length=20, choices=LeadType.choices, default=LeadType.STANDARD
     )
     reference_image    = models.FileField(
-        upload_to='custom-requests/', null=True, blank=True
+        upload_to='leads/references/', null=True, blank=True
     )
     preferred_material = models.CharField(max_length=50, blank=True)
     

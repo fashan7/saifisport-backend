@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser
 from .models import SiteSettings
 from .serializers import SiteSettingsSerializer
 
@@ -10,7 +10,7 @@ class SiteSettingsView(APIView):
 
     def get_permissions(self):
         if self.request.method == 'GET':
-            return [IsAuthenticatedOrReadOnly()]
+            return []          
         return [IsAdminUser()]
 
     def get(self, request):

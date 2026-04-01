@@ -37,12 +37,13 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    throttle_classes = [] 
     serializer_class = ProductSerializer
     filter_backends  = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category', 'subcategory', 'product_type', 'is_featured']
     search_fields    = ['sku']
     ordering_fields  = ['created_at', 'moq']
+    ordering         = ['id']
+    throttle_classes = [] 
 
     def get_queryset(self):
         return Product.objects.select_related(
