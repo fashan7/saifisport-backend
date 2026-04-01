@@ -5,13 +5,19 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from rest_framework.renderers import JSONRenderer
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.renderers import BaseRenderer
 from .models import Lead
 from .serializers import LeadSerializer
 from .utils import validate_upload
 
 # ── ViewSet ────────────────────────────────────────────────────────────────────
+class PassthroughRenderer(BaseRenderer):
+    media_type = '*/*'
+    format = 'csv'
+    def render(self, data, accepted_media_type=None, renderer_context=None):
+        return data
+    
 class LeadViewSet(viewsets.ModelViewSet):
     queryset         = Lead.objects.all()
     serializer_class = LeadSerializer
@@ -62,8 +68,7 @@ class LeadViewSet(viewsets.ModelViewSet):
             'top_category':     top['category'] if top else None,
         })
 
-    @action(detail=False, methods=['get'], url_path='export',
-            renderer_classes=[JSONRenderer])
+    @action(detail=False, methods=['get'], url_path='export', renderer_classes=[PassthroughRenderer])
     def export(self, request):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="leads.csv"'
