@@ -9,7 +9,8 @@ class MediaFile(models.Model):
     url          = models.URLField(max_length=500)
     public_id    = models.CharField(max_length=255, blank=True)  # Cloudinary public_id
     filename     = models.CharField(max_length=255)
-    alt_text     = models.CharField(max_length=255, blank=True)
+    alt_text     = models.JSONField(default=dict, blank=True) 
+    title        = models.JSONField(default=dict, blank=True)
     aspect_ratio = models.CharField(
         max_length=10, choices=AspectRatio.choices, default=AspectRatio.SQUARE
     )

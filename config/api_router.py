@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from apps.accounts.views import MeView, UserListView, UserDetailView
 from apps.analytics.views import TrackVisitView, AnalyticsSummaryView
 from apps.catalog.views      import CategoryViewSet, ProductViewSet
-from apps.media.views        import MediaFileViewSet
+from apps.media.views import MediaFileViewSet, PublicGalleryView
 from apps.leads.views        import LeadViewSet
 from apps.content.views      import PageViewSet, BannerViewSet, EmailTemplateViewSet
 from apps.subscribers.views  import SubscriberViewSet
@@ -26,26 +26,28 @@ router.register('quotes',          LeadViewSet,          basename='quote')
 router.register('subcategories',   CategoryViewSet,      basename='subcategory')
 
 urlpatterns = [
-     path('', include(router.urls)),
-     path('analytics/track/',   TrackVisitView.as_view(),   name='analytics-track'),
-     path('analytics/summary/', AnalyticsSummaryView.as_view(), name='analytics-summary'),
-     path('auth/me/',          MeView.as_view(),        name='me'),
-     path('users/',            UserListView.as_view(),  name='users'),
-     path('users/<int:pk>/',   UserDetailView.as_view(), name='user-detail'),
-     # Auth
-     path('auth/login/',   TokenObtainPairView.as_view(), name='token_obtain'),
-     path('auth/refresh/', TokenRefreshView.as_view(),    name='token_refresh'),
+    path('', include(router.urls)),
+    
+    path('analytics/track/',   TrackVisitView.as_view(),   name='analytics-track'),
+    path('analytics/summary/', AnalyticsSummaryView.as_view(), name='analytics-summary'),
+    path('auth/me/',          MeView.as_view(),        name='me'),
+    path('users/',            UserListView.as_view(),  name='users'),
+    path('users/<int:pk>/',   UserDetailView.as_view(), name='user-detail'),
+    # Auth
+    path('auth/login/',   TokenObtainPairView.as_view(), name='token_obtain'),
+    path('auth/refresh/', TokenRefreshView.as_view(),    name='token_refresh'),
+    path('gallery/',      PublicGalleryView.as_view(), name='public-gallery'),
 
-     # Settings
-     path('settings/',              SiteSettingsView.as_view(),   name='site-settings'),
-     path('settings/holiday-mode/', HolidayStatusView.as_view(),  name='holiday-status'),
+    # Settings
+    path('settings/',              SiteSettingsView.as_view(),   name='site-settings'),
+    path('settings/holiday-mode/', HolidayStatusView.as_view(),  name='holiday-status'),
 
-     # Newsletter aliases
-     path('newsletter/subscribe/',
+    # Newsletter aliases
+    path('newsletter/subscribe/',
          SubscriberViewSet.as_view({'post': 'create'}),          name='newsletter-subscribe'),
-     path('newsletter/subscribers/',
+    path('newsletter/subscribers/',
          SubscriberViewSet.as_view({'get': 'list'}),             name='newsletter-subscribers'),
-     path('newsletter/subscribers/export/',
+    path('newsletter/subscribers/export/',
          SubscriberViewSet.as_view({'get': 'export'}),           name='newsletter-export'),
      path('newsletter/blast/',
          SubscriberViewSet.as_view({'post': 'send_newsletter'}), name='newsletter-blast'),
