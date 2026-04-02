@@ -114,6 +114,7 @@ class MediaFileViewSet(viewsets.ModelViewSet):
             result = cloudinary.uploader.upload(
                 file,
                 folder         = folder,
+                transformation =transform,
                 quality        = 'auto',
                 fetch_format   = 'auto',
             )
@@ -140,7 +141,7 @@ class MediaFileViewSet(viewsets.ModelViewSet):
             file_size_kb = result.get('bytes', 0) // 1024,
             width        = result.get('width', 0),
             height       = result.get('height', 0),
-            alt_text     = '',
+            alt_text     = {},
         )
 
         return Response(MediaFileSerializer(media).data, status=201)
