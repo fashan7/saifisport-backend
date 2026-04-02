@@ -1,5 +1,9 @@
 from .base import *
 import dj_database_url
+import os
+
+
+os.makedirs(os.path.join(BASE_DIR, 'staticfiles'), exist_ok=True)
  
 # ── Security ─────────────────────────────────────────────────────────────────
 DEBUG = False
