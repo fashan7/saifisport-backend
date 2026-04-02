@@ -1,1 +1,1 @@
-web: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+web: python manage.py migrate && python manage.py shell -c "from apps.accounts.models import User; User.objects.create_superuser('fashanzak4@gmail.com', 'yourpassword') if not User.objects.filter(email='fashanzak4@gmail.com').exists() else None" && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
