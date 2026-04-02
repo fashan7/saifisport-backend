@@ -36,7 +36,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL  = '/static/'
 
 # Whitenoise for serving static files on Railway
-MIDDLEWARE = ['whitenoise.middleware.WhiteNoiseMiddleware'] + MIDDLEWARE
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ── Media files — use Cloudinary (Railway has ephemeral storage) ──────────────
