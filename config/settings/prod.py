@@ -19,3 +19,9 @@ CSRF_COOKIE_SECURE = True
 # Static files
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.railway.app',
+    'https://saifisport.fr',
+    'https://www.saifisport.fr',
+]
